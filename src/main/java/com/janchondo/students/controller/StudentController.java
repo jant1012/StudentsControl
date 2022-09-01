@@ -1,6 +1,7 @@
 package com.janchondo.students.controller;
 
 import java.util.List;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -17,28 +18,32 @@ public class StudentController {
 	public StudentController(StudentService studentService) {
 		this.studentService = studentService;
 	}
+
 	@ApiOperation(value = "Get all students registered ", response = Student.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Success|OK"),
-			@ApiResponse(code = 401, message = "not authorized!"),
-			@ApiResponse(code = 403, message = "forbidden!!!"),
-			@ApiResponse(code = 404, message = "not found!!!") })
+			@ApiResponse(code = 401, message = "Not authorized!"),
+			@ApiResponse(code = 403, message = "Forbidden!!!"),
+			@ApiResponse(code = 404, message = "Not found!!!") })
 	@GetMapping("/students")
 	public ResponseEntity<List<Student>> searchAll() {
 		List<Student> studentsList = studentService.searchAllStudents();
 		return new ResponseEntity<List<Student>>(studentsList,HttpStatus.OK);
 	}
 	@ApiOperation(value = "Save one student in the system ", response = Student.class)
+//	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/students/save")
 	public void saveStudent(@RequestBody Student student) {
 		studentService.saveStudent(student);
 	}
 	@ApiOperation(value = "Delete one student to the system ", response = Student.class)
-	@GetMapping("/students/delete/{studentID}")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@PatchMapping("/students/delete/{studentID}")
 	public void deleteStudent(@PathVariable("studentID") String studentID) {
 		studentService.deleteStudent(studentID);
 	}
 	@ApiOperation(value = "Update one student to the system", response = Student.class)
+//	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@PatchMapping("/students/update/{studentID}")
 	public void updateStudent(@PathVariable("studentID") String studentID,@RequestBody Student student){
 		studentService.updateStudent(studentID, student);
