@@ -2,6 +2,7 @@ package com.janchondo.students.controller;
 
 import java.util.List;
 
+import com.janchondo.students.DTO.StudentDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,19 +32,21 @@ public class StudentController {
 		return new ResponseEntity<List<Student>>(studentsList,HttpStatus.OK);
 	}
 	@ApiOperation(value = "Save one student in the system ", response = Student.class)
-//	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/students/save")
 	public void saveStudent(@RequestBody Student student) {
 		studentService.saveStudent(student);
 	}
+	@ApiOperation(value = "Update the student attendance and score in the system ", response = Student.class)
+	@PatchMapping("/students/attendance/{studentID}")
+	public void registerAssistance(@PathVariable("studentID") String studentID,@RequestBody StudentDTO student) {
+		studentService.updateStudentAttendanceScores(studentID, student);
+	}
 	@ApiOperation(value = "Delete one student to the system ", response = Student.class)
-//	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/students/delete/{studentID}")
 	public void deleteStudent(@PathVariable("studentID") String studentID) {
 		studentService.deleteStudent(studentID);
 	}
 	@ApiOperation(value = "Update one student to the system", response = Student.class)
-//	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@PatchMapping("/students/update/{studentID}")
 	public void updateStudent(@PathVariable("studentID") String studentID,@RequestBody Student student){
 		studentService.updateStudent(studentID, student);
@@ -53,5 +56,11 @@ public class StudentController {
 	public ResponseEntity<Student> searchStudentById(@PathVariable("studentID") String studentID) {
 		 Student student= studentService.findStudentByID(studentID);
 		return new ResponseEntity<Student>(student, HttpStatus.OK);
+	}
+	@ApiOperation(value = "Getting and Updating student scores in the system ", response = Student.class)
+	@PatchMapping("/students/scores")
+	public ResponseEntity<List<Student>> improveQualificationsWithAssistance() {
+		List<Student> studentsList = studentService.searchStudentsThatImprovedScores();
+		return new ResponseEntity<List<Student>>(studentsList,HttpStatus.OK);
 	}
 }

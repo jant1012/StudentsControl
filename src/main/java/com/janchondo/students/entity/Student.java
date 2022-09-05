@@ -17,9 +17,11 @@ public class Student {
 	private String lastName;
 	private String age;
 	private String phone;
+	private int attendance;
+	private double score;
+	private Boolean isScoreImproved = false;
 	private String birthday;
 	private Boolean isDeleted = false;
-
 }
 
 
