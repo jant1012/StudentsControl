@@ -6,5 +6,4 @@ import lombok.Data;
 public class StudentDTO {
     private int attendance;
     private double score;
-    private Boolean isScoreImproved = false;
 }

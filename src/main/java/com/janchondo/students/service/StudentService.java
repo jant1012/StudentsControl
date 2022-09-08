@@ -1,15 +1,15 @@
 package com.janchondo.students.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.janchondo.students.DTO.StudentDTO;
-import com.janchondo.students.exception.UserNotFoundException;
+import com.janchondo.students.exception.StudentNotFoundException;
 import com.janchondo.students.repository.iStudentDAO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.janchondo.students.entity.Student;
-import com.janchondo.students.exception.NoDataFoundException;
+import com.janchondo.students.exception.NoStudentsFoundException;
 
 @Service
 public class StudentService{
@@ -23,7 +23,7 @@ public class StudentService{
 		if(!studentsList.isEmpty()) {
 			studentsList = studentsList.stream().filter(x -> x.getIsDeleted() == false).collect(Collectors.toList());
 		}else {
-			throw new NoDataFoundException();
+			throw new NoStudentsFoundException(HttpStatus.NOT_FOUND, "Students not found!");
 		}
 		return studentsList;
 	}
@@ -46,7 +46,7 @@ public class StudentService{
 		}	
 	}
 	public Student findStudentByID(String studentID) {
-      return studentDAO.findById(studentID).orElseThrow(() -> new UserNotFoundException(studentID));
+      return studentDAO.findById(studentID).orElseThrow(() -> new StudentNotFoundException(HttpStatus.NOT_FOUND,"Student with ID: " + studentID + " not found!"));
    	}
 	public void updateStudent(String studentID, Student student) {
 		Student studentOld = findStudentByID(studentID);
@@ -86,7 +86,7 @@ public class StudentService{
 				saveStudent(student);
 			}
 		}else{
-			throw new NoDataFoundException();
+			throw new NoStudentsFoundException(HttpStatus.NOT_FOUND,"Students not found!");
 		}
 		return studentsList;
 	}
