@@ -24,7 +24,6 @@ public class StudentServiceTest {
     private iStudentDAO studentDAO;
     @InjectMocks
     private StudentService studentService;
-    private Student student;
     Student student1 = new Student("1","Jesus","Anchondo","24","65894576957",
             6,9.6,false,"10-05-1997",false);
     Student student2 = new Student("2","David","Anchondo","24","65894576957",
