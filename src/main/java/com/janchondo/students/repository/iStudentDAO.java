@@ -10,6 +10,6 @@ import java.util.stream.Stream;
 
 @Repository
 public interface iStudentDAO extends MongoRepository<Student, String> {
-    @Query("{attendance : {$gt: ?0}}")
+    @Query("{attendance : {$gte: ?0}}")
     List<Student> findStudentsGtThanMinimumAttendance(int attendance);
 }
