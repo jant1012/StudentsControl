@@ -104,6 +104,8 @@ public class StudentControllerTest {
         mockMvc.perform(patch("/students/update/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(student1)))
                 .andExpect(status().isOk());
+
+        verify(studentService).updateStudent("1",student1);
     }
     @Test
     void deleteStudentTest() throws Exception{
@@ -111,11 +113,15 @@ public class StudentControllerTest {
         mockMvc.perform(patch("/students/delete/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(student1)))
                 .andExpect(status().isOk());
+
+        verify(studentService).deleteStudent("1");
     }
     @Test
     void improveQualificationsWithAssistanceTest() throws Exception{
         mockMvc.perform(patch("/students/scores").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(student1)))
                 .andExpect(status().isOk());
+
+        verify(studentService).searchStudentsThatImprovedScores();
     }
 }
